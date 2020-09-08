@@ -1,14 +1,16 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.PlayerLoop;
 
 public class Magneto : Magnet
 {
-    // Start is called before the first frame update
-    void Start()
+
+    public override void Initialise()
     {
+        base.Initialise();
         myTransform = transform;
-        UpdateSpeed();
+
     }
 
     // Update is called once per frame
@@ -16,16 +18,17 @@ public class Magneto : Magnet
 
     [SerializeField] float rotationPerSecond;
     [SerializeField] float defaultSpeed;
-    public Rigidbody rigidbody;
+    //[SerializeField] float velocity;
+    [SerializeField] private float currentBoostlessSpeed;
 
-    void Update()
-    {
-        
-    }
-
+    private float lastSpeedCheck;
+    [SerializeField] private float speedCheckInterval = 0.3f;
+    [SerializeField] private int attachedObjects;
     private void FixedUpdate()
     {
-        if (!attached)
+      // velocity = rigidbody.velocity.magnitude;
+        //rigidbody.velocity = Vector3.zero;
+        //if (!attached)
         {
             float mouseMovement = Input.GetAxisRaw("Mouse X");
             float deltaTime = Time.deltaTime;
@@ -35,15 +38,44 @@ public class Magneto : Magnet
                 myTransform.Rotate(new Vector3
                     (0, rotationPerSecond * mouseMovement * deltaTime, 0));
             }
-            myTransform.Translate(Vector3.forward * currentSpeed * deltaTime);
+            if (Input.GetMouseButton(0))
+            {
+                rigidbody.AddForce(myTransform.forward * (currentBoostlessSpeed + speedBoost) * deltaTime, ForceMode.Force);
+                //myTransform.Translate(Vector3.forward * currentSpeed * deltaTime);
+            }
+
         }
 
-
+        float time = Time.time;
+        if (time > lastSpeedCheck + speedCheckInterval)
+        {
+            UpdateSpeed();
+            lastSpeedCheck = time;
+        }
+    }
+    private List<MetalObject> metalObjectsTouching = new List<MetalObject>();
+    private void OnCollisionEnter(Collision collision)
+    {
+        MetalObject metalObject = collision.gameObject.GetComponent<MetalObject>();
+        if (metalObject != null)
+        {
+            if (!metalObjectsTouching.Contains(metalObject))
+            {
+                metalObjectsTouching.Add(metalObject);
+            }
+        }
     }
 
-    private List<MetalObject> attachedMetalObjects = new List<MetalObject>();
-    private float currentSpeed;
-    public override void AttachMetalObject(MetalObject metalObject)
+    private void OnCollisionExit(Collision collision)
+    {
+        MetalObject metalObject = collision.gameObject.GetComponent<MetalObject>();
+        if (metalObject != null)
+        {
+            metalObjectsTouching.Remove(metalObject);
+        }
+    }
+    // private List<MetalObject> attachedMetalObjects = new List<MetalObject>();
+    /*public override void AttachMetalObject(MetalObject metalObject)
     {
         base.AttachMetalObject(metalObject);
         attachedMetalObjects.Add(metalObject);
@@ -55,22 +87,64 @@ public class Magneto : Magnet
         base.DetachMetalObject(metalObject);
         attachedMetalObjects.Remove(metalObject);
         UpdateSpeed();
-    }
+    }*/
+
+    private List<MetalObject> metalObjectsAttachedToMagneto = new List<MetalObject>();
+
     private void UpdateSpeed()
     {
-        currentSpeed = defaultSpeed;
-        for (int i = 0; i < attachedMetalObjects.Count; i++)
+        currentBoostlessSpeed = defaultSpeed ;
+        if (metalObjectsTouching.Count == 0)
         {
-            currentSpeed -= attachedMetalObjects[i].SpeedReduction;
+            attachedObjects = 0;
+            return;
         }
-        Debug.Log("attachedMetalObjects.Count:" + attachedMetalObjects.Count);
+        metalObjectsAttachedToMagneto.Clear();
+        metalObjectsAttachedToMagneto.AddRange(metalObjectsTouching);
+        bool newObjectsFound = true;
+        int previousCount = 0;
+        while (newObjectsFound)
+        {
+            newObjectsFound = false;
+            int count = metalObjectsAttachedToMagneto.Count;
+            for (int i = previousCount; i < count; i++)
+            {
+                MetalObject metalObject = metalObjectsAttachedToMagneto[i];
+                foreach (MetalObject metalObjectTouchingMetalObject in metalObject.metalObjectsTouching)
+                {
+                    if (!metalObjectsAttachedToMagneto.Contains(metalObjectTouchingMetalObject))
+                    {
+                        metalObjectsAttachedToMagneto.Add(metalObjectTouchingMetalObject);
+                        newObjectsFound = true;
+                    }
+                }
+            }
+            previousCount = count;
+        }
 
-        Debug.Log("currentSpeed:" + currentSpeed);
+
+        attachedObjects = metalObjectsAttachedToMagneto.Count;
+        for (int i = 0; i < metalObjectsAttachedToMagneto.Count; i++)
+        {
+            currentBoostlessSpeed -= metalObjectsAttachedToMagneto[i].SpeedReduction;
+        }
+        /* return;
+
+         currentSpeed = defaultSpeed;
+         return;
+         for (int i = 0; i < attachedMetalObjects.Count; i++)
+         {
+             currentSpeed -= attachedMetalObjects[i].SpeedReduction;
+         }
+         Debug.Log("attachedMetalObjects.Count:" + attachedMetalObjects.Count);
+
+         Debug.Log("currentSpeed:" + currentSpeed);*/
     }
 
-    private bool attached =false;
+    /*private bool attached =false;
     private void OnCollisionEnter(Collision collision)
     {
+        return;
         //if (magnetAttached == null)
         {
             Magnet magnet = collision.gameObject.GetComponent<Magnet>();
@@ -84,10 +158,38 @@ public class Magneto : Magnet
         }
 
 
+    }*/
+
+    /* private void OnCollisionStay(Collision collision)
+     {
+         float time = Time.time;
+         if (time > lastSpeedCheck+ speedCheckInterval)
+         {
+             for
+             lastSpeedCheck = time;
+         }
+     }*/
+    /* private void AttachTo(Magnet magnet)
+     {
+         magnet.AttachMetalObject(this);
+     }*/
+   [SerializeField] private float speedBoost;
+
+    private void OnTriggerEnter(Collider other)
+    {
+        SpeedBooster speedBooster = other.GetComponent<SpeedBooster>();
+        if (speedBooster != null)
+        {
+            speedBoost = speedBooster.SpeedBoost;
+        }
     }
 
-   /* private void AttachTo(Magnet magnet)
+    private void OnTriggerExit(Collider other)
     {
-        magnet.AttachMetalObject(this);
-    }*/
+        SpeedBooster speedBooster = other.GetComponent<SpeedBooster>();
+        if (speedBooster != null)
+        {
+            speedBoost = 0;
+        }
+    }
 }
