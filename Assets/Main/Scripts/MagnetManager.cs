@@ -39,9 +39,9 @@ public class MagnetManager : MonoBehaviour
                   if (distanceFromMagnet <= magnetAttractionDistance)
                   {
                        // Debug.Log("distanceFromMagnet" + distanceFromMagnet);
-
                         float attractionSpeed =
-                          (Mathf.Abs(distanceFromMagnet - magnetAttractionDistance) / magnetAttractionDistance) * magnets[j].AttractionForce;
+                          (Mathf.Abs(distanceFromMagnet - magnetAttractionDistance) / magnetAttractionDistance) 
+                          * magnets[j].AttractionForce;
                       /*if (metalObject.IsAttachedToSomeMagnet())
                       {
                           if(attractionSpeed> metalObject.attraction)
@@ -53,10 +53,6 @@ public class MagnetManager : MonoBehaviour
                               continue;
                           }
                       }*/
-
-                      //metalObject.attraction = attractionSpeed;
-
-                      //Debug.Log("attractionSpeed=" + attractionSpeed);
 
                       metalObjects[i].rigidbody.AddForce
                           ((magnetPosition - metalObjectTransform.position).normalized

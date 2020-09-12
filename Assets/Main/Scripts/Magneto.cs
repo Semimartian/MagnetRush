@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.PlayerLoop;
+using UnityEngine.UI;
 
 public class Magneto : Magnet
 {
@@ -10,15 +11,21 @@ public class Magneto : Magnet
     {
         base.Initialise();
         myTransform = transform;
-
+        InvokeRepeating("UpdateDebugText", 1, 0.2f);
     }
-
+    private void UpdateDebugText()
+    {
+        debugText.text = "Velocity: " + velocity.ToString("f3") + "\n" +
+        "Attached: " + attachedObjects;
+    }
     // Update is called once per frame
     private Transform myTransform;
 
     [SerializeField] float rotationPerSecond;
     [SerializeField] float defaultSpeed;
-    //[SerializeField] float velocity;
+    [SerializeField] float velocity;
+    [SerializeField] Text debugText;
+
     [SerializeField] private float currentBoostlessSpeed;
 
     private float lastSpeedCheck;
@@ -26,7 +33,8 @@ public class Magneto : Magnet
     [SerializeField] private int attachedObjects;
     private void FixedUpdate()
     {
-      // velocity = rigidbody.velocity.magnitude;
+       velocity = rigidbody.velocity.magnitude;
+
         //rigidbody.velocity = Vector3.zero;
         //if (!attached)
         {

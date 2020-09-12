@@ -10,12 +10,18 @@ public class Magnet : MonoBehaviour
     private void Start()
     {
         Initialise();
+        
     }
 
     public virtual void Initialise()
     {
         attractionDistance = attractionSphere.radius;
-        //Destroy(attractionSphere);
+        if(!(this is Magneto))
+        {
+            //gameObject.SetActive(false);
+        }
+        //attractionSphere.isTrigger = true;
+       Destroy(attractionSphere);
     }
     public float AttractionForce
     {
