@@ -8,11 +8,6 @@ public class Magnet : MonoBehaviour
     public Transform attrractivePoint;
     public Rigidbody rigidbody;
 
-    private void Start()
-    {
-        Initialise();
-        
-    }
 
     public virtual void Initialise()
     {

@@ -7,11 +7,25 @@ public class MagnetManager : MonoBehaviour
     private MetalObject[] metalObjects;
     //[SerializeField] private Transform magnet;
     private Magnet[] magnets;
-
+    [SerializeField] private MagnetDistortion MagnetDistortionPreFab;
     void Start()
     {
         metalObjects = FindObjectsOfType<MetalObject>();
         magnets = FindObjectsOfType<Magnet>();
+        for (int i = 0; i < magnets.Length; i++)
+        {
+            magnets[i].Initialise();
+        }
+        CreateMagnetDistortions();
+
+    }
+    private void CreateMagnetDistortions()
+    {
+        for (int i = 0; i < magnets.Length; i++)
+        {
+            MagnetDistortion distortion = Instantiate(MagnetDistortionPreFab);
+            distortion.Constructor(magnets[i].attrractivePoint, magnets[i].AttractionDistance);
+        }
     }
 
     private void FixedUpdate()
