@@ -27,7 +27,7 @@ public class MagnetManager : MonoBehaviour
         for (int j = 0; j < magnets.Length; j++)
         {
 
-            Vector3 magnetPosition = magnets[j].transform.position;
+            Vector3 magnetPosition = magnets[j].attrractivePoint.position;
             for (int i = 0; i < metalObjects.Length; i++)
             {
                 MetalObject metalObject = metalObjects[i];
@@ -76,7 +76,7 @@ public class MagnetManager : MonoBehaviour
             {
                 continue;//O4TODO:Optimise
             }
-            Vector3 magnetPosition = magnets[j].transform.position;
+            Vector3 magnetPosition = magnets[j].attrractivePoint.position;
 
             //Transform metalObjectTransform = metalObject.transform;
             float distanceFromMagnet = Vector3.Distance(magnetPosition, magnetoPosition);

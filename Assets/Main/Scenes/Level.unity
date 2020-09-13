@@ -760,6 +760,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   attractionForce: 16000
+  attrractivePoint: {fileID: 0}
   rigidbody: {fileID: 0}
   attractionSphere: {fileID: 195574311}
 --- !u!54 &195574306
@@ -2674,6 +2675,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   attractionForce: 22000
+  attrractivePoint: {fileID: 0}
   rigidbody: {fileID: 722340024}
   attractionSphere: {fileID: 722340022}
 --- !u!54 &722340024
@@ -3055,6 +3057,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   attractionForce: 18000
+  attrractivePoint: {fileID: 0}
   rigidbody: {fileID: 0}
   attractionSphere: {fileID: 900536815}
 --- !u!54 &900536810
@@ -4177,6 +4180,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   attractionForce: 18000
+  attrractivePoint: {fileID: 0}
   rigidbody: {fileID: 0}
   attractionSphere: {fileID: 1208964117}
 --- !u!54 &1208964112
@@ -4463,6 +4467,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   attractionForce: -8000
+  attrractivePoint: {fileID: 0}
   rigidbody: {fileID: 0}
   attractionSphere: {fileID: 1282226636}
 --- !u!54 &1282226631
@@ -7695,6 +7700,16 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 13400000, guid: 29b4cf327c1502249be9d41139bbe272,
         type: 2}
+    - target: {fileID: 4927659228536006277, guid: 57efd55029479f545ac9752e882eab41,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4927659228536006277, guid: 57efd55029479f545ac9752e882eab41,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0.65
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 57efd55029479f545ac9752e882eab41, type: 3}
 --- !u!222 &5298242784554519507

@@ -5,6 +5,7 @@ using UnityEngine;
 public class Magnet : MonoBehaviour
 {
     [SerializeField] private float attractionForce;
+    public Transform attrractivePoint;
     public Rigidbody rigidbody;
 
     private void Start()
@@ -16,6 +17,10 @@ public class Magnet : MonoBehaviour
     public virtual void Initialise()
     {
         attractionDistance = attractionSphere.radius;
+        if (attrractivePoint == null)
+        {
+            attrractivePoint = transform;
+        }
         if(!(this is Magneto))
         {
             //gameObject.SetActive(false);
