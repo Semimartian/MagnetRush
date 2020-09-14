@@ -33,11 +33,11 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Floats:
     - _AlphaCutoff: 0.5
-    - _ColourCorrector: 1.5
+    - _ColourCorrector: 1.4
     - _Cutoff: 0.5
     - _Distort: 0.085
     - _InvFade: 2.02
-    - _MaskModifier: 0.3
+    - _MaskModifier: 0.15
     - _TransAmbient: 0
     - _TransDirect: 1
     - _TransNormalDistortion: 0
