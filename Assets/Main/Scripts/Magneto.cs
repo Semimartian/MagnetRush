@@ -200,4 +200,6 @@ public class Magneto : Magnet
             speedBoost = 0;
         }
     }
+
+    public float GetVelocity() => velocity;
 }

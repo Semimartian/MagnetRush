@@ -1,12 +1,29 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[Serializable]
+public struct Offset
+{
+    public Offset(Vector3 position , Vector3 angle)
+    {
+        this.position = position;
+        this.angle = angle;
+    }
+
+    public Vector3 position;
+    public Vector3 angle;
+
+}
 public class MainCamera : MonoBehaviour
 {
-    [SerializeField] private Transform moveToTarget;
-    [SerializeField] private Transform lookAtTarget;
-    [SerializeField] private float zDistance=-10;
+    [SerializeField]
+    private Offset offset;
+
+   [SerializeField] private Transform lookAtTarget;
+
+    //[SerializeField] private float zDistance=-10;
 
     private Transform myTransform;
 
@@ -20,13 +37,13 @@ public class MainCamera : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
-        Vector3 moveToPosition = lookAtTarget.position;
-        float newZ = moveToPosition.z + zDistance;
-        float newX =Mathf.Lerp( myTransform.position.x, moveToPosition.x,Time.deltaTime * 5f);
+        Vector3 moveToPosition = lookAtTarget.position + offset.position;
+        //float newZ = moveToPosition.z + zDistance;
+        //float newX =Mathf.Lerp( myTransform.position.x, moveToPosition.x,Time.deltaTime * 5f);
 
-        myTransform.position = new Vector3(newX, myTransform.position.y, newZ);
+        myTransform.position = moveToPosition;// new Vector3(newX, myTransform.position.y, newZ);
 
-
+        //myTransform.rotation = offset.angle.eua
     }
 }
 /*Vector3 myEuler = myTransform.rotation.eulerAngles;
