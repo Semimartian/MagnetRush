@@ -6,11 +6,12 @@ public class Magnet : MonoBehaviour
 {
     [SerializeField] private float attractionForce;
     public Transform attrractivePoint;
-    public Rigidbody rigidbody;
-
+    protected Rigidbody rigidbody;
+    
 
     public virtual void Initialise()
     {
+        rigidbody = GetComponent<Rigidbody>();
         attractionDistance = attractionSphere.radius;
         if (attrractivePoint == null)
         {
@@ -22,6 +23,11 @@ public class Magnet : MonoBehaviour
         }
         //attractionSphere.isTrigger = true;
        Destroy(attractionSphere);
+    }
+
+    public void MovePhysically(Vector3 position)
+    {
+        rigidbody.MovePosition(position);
     }
     public float AttractionForce
     {

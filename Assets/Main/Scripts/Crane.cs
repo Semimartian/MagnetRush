@@ -14,6 +14,8 @@ public class Crane : MonoBehaviour
     {
         yOffset = magnet.transform.position.y;
     }
+
+
     private void FixedUpdate()
     {
         timer += Time.deltaTime;
@@ -23,6 +25,8 @@ public class Crane : MonoBehaviour
         }
         Vector3 newMagnetPosition = magnet.transform.position;
         newMagnetPosition.y = curve.Evaluate(timer) + yOffset;
-        magnet.rigidbody.MovePosition(newMagnetPosition);
+
+        magnet.MovePhysically(newMagnetPosition);
+       // magnet.rigidbody.MovePosition(newMagnetPosition);
     }
 }

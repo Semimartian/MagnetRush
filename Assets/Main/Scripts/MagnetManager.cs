@@ -105,7 +105,7 @@ public class MagnetManager : MonoBehaviour
                     (Mathf.Abs(distanceFromMagnet - magnetAttractionDistance) / magnetAttractionDistance)
                     * magnets[j].AttractionForce * MagnetsForceAgainstMagnetoMultiplier;
 
-                magneto.rigidbody.AddForce
+                magneto.AddForce
                     ((magnetPosition - magneto.transform.position).normalized
                     * (attractionSpeed * deltaTime), ForceMode.Force);
             }       

@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class MeshCombiner : MonoBehaviour
 {
-    
-    void Start()
+    [SerializeField] private PhysicMaterial physicMaterial;
+    private void Start()
     {
         CombineChildren();
     }
@@ -34,7 +34,7 @@ public class MeshCombiner : MonoBehaviour
         Mesh combinedMesh = new Mesh();
         combinedMesh.CombineMeshes(combineInstances.ToArray());
         myMeshFilter.mesh = combinedMesh;
-        gameObject.AddComponent<MeshCollider>();
+        gameObject.AddComponent<MeshCollider>().material = physicMaterial;
 
 
         //CleanUp

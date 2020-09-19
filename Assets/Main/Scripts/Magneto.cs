@@ -13,12 +13,7 @@ public class Magneto : Magnet
         myTransform = transform;
         InvokeRepeating("UpdateDebugText", 1, 0.2f);
     }
-    private void UpdateDebugText()
-    {
-        debugText.text = "Velocity: " + velocity.ToString("f3") + "\n" +
-        "Attached: " + attachedObjects;
-    }
-    // Update is called once per frame
+
     private Transform myTransform;
 
     [SerializeField] float rotationPerSecond;
@@ -33,8 +28,8 @@ public class Magneto : Magnet
     [SerializeField] private int attachedObjects;
     private void FixedUpdate()
     {
-       velocity = rigidbody.velocity.magnitude;
-
+         velocity = rigidbody.velocity.magnitude;
+  
         //rigidbody.velocity = Vector3.zero;
         //if (!attached)
         {
@@ -82,23 +77,13 @@ public class Magneto : Magnet
             metalObjectsTouching.Remove(metalObject);
         }
     }
-    // private List<MetalObject> attachedMetalObjects = new List<MetalObject>();
-    /*public override void AttachMetalObject(MetalObject metalObject)
-    {
-        base.AttachMetalObject(metalObject);
-        attachedMetalObjects.Add(metalObject);
-        UpdateSpeed();
-    }
-
-    public override void DetachMetalObject(MetalObject metalObject)
-    {
-        base.DetachMetalObject(metalObject);
-        attachedMetalObjects.Remove(metalObject);
-        UpdateSpeed();
-    }*/
-
+  
     private List<MetalObject> metalObjectsAttachedToMagneto = new List<MetalObject>();
 
+   public void AddForce(Vector3 force, ForceMode mode)
+    {
+        rigidbody.AddForce(force, mode);
+    }
     private void UpdateSpeed()
     {
         currentBoostlessSpeed = defaultSpeed ;
@@ -148,39 +133,7 @@ public class Magneto : Magnet
 
          Debug.Log("currentSpeed:" + currentSpeed);*/
     }
-
-    /*private bool attached =false;
-    private void OnCollisionEnter(Collision collision)
-    {
-        return;
-        //if (magnetAttached == null)
-        {
-            Magnet magnet = collision.gameObject.GetComponent<Magnet>();
-            if (magnet != null)
-            {
-                attached = true;
-                rigidbody.isKinematic = true;
-
-              //  AttachTo(magnet);
-            }
-        }
-
-
-    }*/
-
-    /* private void OnCollisionStay(Collision collision)
-     {
-         float time = Time.time;
-         if (time > lastSpeedCheck+ speedCheckInterval)
-         {
-             for
-             lastSpeedCheck = time;
-         }
-     }*/
-    /* private void AttachTo(Magnet magnet)
-     {
-         magnet.AttachMetalObject(this);
-     }*/
+ 
    [SerializeField] private float speedBoost;
 
     private void OnTriggerEnter(Collider other)
@@ -202,4 +155,10 @@ public class Magneto : Magnet
     }
 
     public float GetVelocity() => velocity;
+
+    private void UpdateDebugText()
+    {
+        debugText.text = "Velocity: " + velocity.ToString("f3") + "\n" +
+        "Attached: " + attachedObjects;
+    }
 }
